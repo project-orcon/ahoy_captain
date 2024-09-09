@@ -15,8 +15,13 @@ module AhoyCaptain
         Ransack::Visitor.new.accept(search.base)
       }
 
+      distinct_visits = AhoyCaptain.visit.joins(shared_context.join_sources)
+                                  .where(shared_conditions.reduce(&:and))
+                                  .select(:id)
+                                  .distinct
+
       AhoyCaptain.visit.joins(shared_context.join_sources)
-            .where(shared_conditions.reduce(&:and)).distinct(:visit_id)
+                 .where(id: distinct_visits)
 
     end
 
