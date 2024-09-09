@@ -3,7 +3,7 @@ module AhoyCaptain
     class DevicesTableComponent < DynamicTable
       register do
         progress_bar :display_name, value: :count, max: :total_count, title: "Device"
-        number :count, title: "Visitors"
+        number :count, title: "Visits"
       end
 
     end
