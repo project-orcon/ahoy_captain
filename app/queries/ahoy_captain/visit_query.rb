@@ -15,15 +15,10 @@ module AhoyCaptain
         Ransack::Visitor.new.accept(search.base)
       }
 
-          distinct_events = AhoyCaptain.visit.joins(shared_context.join_sources)
-          .where(shared_conditions.reduce(&:and))
-          .select("#{AhoyCaptain.event.table_name}.id")
-          .distinct
+      filtered_visits = AhoyCaptain.visit.joins(shared_context.join_sources)
+            .where(shared_conditions.reduce(&:and)).distinct.pluck(:id)
 
-          AhoyCaptain.visit.joins(shared_context.join_sources)
-          .where("#{AhoyCaptain.event.table_name}.id" => distinct_events)
-
-
+      AhoyCaptain.visit.where(id: filtered_visits)
     end
 
     def is_a?(other)
