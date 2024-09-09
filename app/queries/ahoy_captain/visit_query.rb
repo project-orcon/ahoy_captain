@@ -15,10 +15,11 @@ module AhoyCaptain
         Ransack::Visitor.new.accept(search.base)
       }
 
-      filtered_visits = AhoyCaptain.visit.joins(shared_context.join_sources)
+      visit_ids = AhoyCaptain.visit.joins(shared_context.join_sources)
             .where(shared_conditions.reduce(&:and)).distinct.pluck(:id)
 
-      AhoyCaptain.visit.where(id: filtered_visits)
+      AhoyCaptain.visit.where("ahoy_visits.id IN (?)", visit_ids)
+
     end
 
     def is_a?(other)
